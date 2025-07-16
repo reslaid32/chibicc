@@ -1,0 +1,34 @@
+---
+BasedOnStyle: GNU
+IndentWidth: 2              # Use 2 spaces for indentation — common and readable
+TabWidth: 4
+UseTab: Never               # Use spaces instead of tabs
+AllowShortIfStatementsOnASingleLine: Never 
+AllowShortFunctionsOnASingleLine: Inline
+ColumnLimit: 80             # Limit lines to 80 characters, classic GNU style
+BreakBeforeBraces: Allman   # Allman style braces (brace on new line)
+PointerAlignment: Left      # Pointer stars aligned left (int* ptr)
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+SortIncludes: CaseInsensitive # Sort #includes alphabetically
+
+# More strict breaking rules
+BreakAfterJavaFieldAnnotations: false
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeTernaryOperators: true
+PenaltyBreakBeforeFirstCallParameter: 20
+PenaltyExcessCharacter: 5
+PenaltyReturnTypeOnItsOwnLine: 60
+
+# Comment pragmas to recognize
+CommentPragmas: '^ IWYU pragma:'
+
+# Avoid allowing all parameters on the next line
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# Spaces around operators and parentheses
+SpacesInParentheses: false
+SpacesInAngles: Never
+SpacesInCStyleCastParentheses: false
+SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: true
+
