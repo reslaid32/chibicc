@@ -215,6 +215,8 @@ gen_addr(Node* node)
   case ND_VLA_PTR:
     println("  lea %d(%%rbp), %%rax", node->var->offset);
     return;
+  default:
+    break;
   }
 
   error_tok(node->tok, "not an lvalue");
@@ -247,6 +249,8 @@ load(Type* ty)
   case TY_LDOUBLE:
     println("  fldt (%%rax)");
     return;
+  default:
+    break;
   }
 
   char* insn = ty->is_unsigned ? "movz" : "movs";
@@ -291,6 +295,8 @@ store(Type* ty)
   case TY_LDOUBLE:
     println("  fstpt (%%rdi)");
     return;
+  default:
+    break;
   }
 
   if (ty->size == 1)
@@ -321,6 +327,8 @@ cmp_zero(Type* ty)
     println("  fucomip");
     println("  fstp %%st(0)");
     return;
+  default:
+    break;
   }
 
   if (is_integer(ty) && ty->size <= 4)
@@ -363,6 +371,8 @@ getTypeId(Type* ty)
     return F64;
   case TY_LDOUBLE:
     return F80;
+  default:
+    break;
   }
   return U64;
 }
@@ -871,6 +881,8 @@ gen_expr(Node* node)
       println("  fldt -16(%%rsp)");
       return;
     }
+    default:
+      break;
     }
 
     println("  mov $%ld, %%rax", node->val);
@@ -896,6 +908,8 @@ gen_expr(Node* node)
     case TY_LDOUBLE:
       println("  fchs");
       return;
+    default:
+      break;
     }
 
     println("  neg %%rax");
@@ -1121,6 +1135,8 @@ gen_expr(Node* node)
       else
         println("  movswl %%ax, %%eax");
       return;
+    default:
+      break;
     }
 
     // If the return type is a small struct, a value is returned
@@ -1168,6 +1184,34 @@ gen_expr(Node* node)
     println("  xchg %s, (%%rdi)", reg_ax(sz));
     return;
   }
+  case ND_ADD:
+  case ND_SUB:
+  case ND_MUL:
+  case ND_DIV:
+  case ND_MOD:
+  case ND_BITAND:
+  case ND_BITOR:
+  case ND_BITXOR:
+  case ND_SHL:
+  case ND_SHR:
+  case ND_EQ:
+  case ND_NE:
+  case ND_LT:
+  case ND_LE:
+  case ND_RETURN:
+  case ND_IF:
+  case ND_FOR:
+  case ND_DO:
+  case ND_SWITCH:
+  case ND_CASE:
+  case ND_BLOCK:
+  case ND_GOTO:
+  case ND_GOTO_EXPR:
+  case ND_LABEL:
+  case ND_EXPR_STMT:
+  case ND_VLA_PTR:
+  case ND_ASM:
+    break;
   }
 
   switch (node->lhs->ty->kind)
@@ -1226,6 +1270,8 @@ gen_expr(Node* node)
       println("  and $1, %%al");
       println("  movzb %%al, %%rax");
       return;
+    default:
+      break;
     }
 
     error_tok(node->tok, "invalid expression");
@@ -1267,10 +1313,14 @@ gen_expr(Node* node)
 
       println("  movzb %%al, %%rax");
       return;
+    default:
+      break;
     }
 
     error_tok(node->tok, "invalid expression");
   }
+  default:
+    break;
   }
 
   gen_expr(node->rhs);
@@ -1374,6 +1424,8 @@ gen_expr(Node* node)
     else
       println("  sar %%cl, %s", ax);
     return;
+  default:
+    break;
   }
 
   error_tok(node->tok, "invalid expression");
@@ -1495,6 +1547,8 @@ gen_stmt(Node* node)
         else
           copy_struct_mem();
         break;
+      default:
+        break;
       }
     }
 
@@ -1506,6 +1560,8 @@ gen_stmt(Node* node)
   case ND_ASM:
     println("  %s", node->asm_str);
     return;
+  default:
+    break;
   }
 
   error_tok(node->tok, "invalid statement");

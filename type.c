@@ -93,6 +93,8 @@ is_compatible(Type* t1, Type* t2)
     if (!is_compatible(t1->base, t2->base))
       return false;
     return t1->array_len < 0 && t2->array_len < 0 && t1->array_len == t2->array_len;
+  default:
+    break;
   }
   return false;
 }
@@ -342,5 +344,7 @@ add_type(Node* node)
       error_tok(node->cas_addr->tok, "pointer expected");
     node->ty = node->lhs->ty->base;
     return;
+  default:
+    break;
   }
 }

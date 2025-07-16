@@ -2218,6 +2218,8 @@ eval2(Node* node, char*** label)
     return 0;
   case ND_NUM:
     return node->val;
+  default:
+    break;
   }
 
   error_tok(node->tok, "not a compile-time constant");
@@ -2237,6 +2239,8 @@ eval_rval(Node* node, char*** label)
     return eval2(node->lhs, label);
   case ND_MEMBER:
     return eval_rval(node->lhs, label) + node->member->offset;
+  default:
+    break;
   }
 
   error_tok(node->tok, "invalid initializer");
@@ -2278,6 +2282,8 @@ is_const_expr(Node* node)
     return is_const_expr(node->lhs);
   case ND_NUM:
     return true;
+  default:
+    break;
   }
 
   return false;
@@ -2325,6 +2331,8 @@ eval_double(Node* node)
     return eval(node->lhs);
   case ND_NUM:
     return node->fval;
+  default:
+    break;
   }
 
   error_tok(node->tok, "not a compile-time constant");
